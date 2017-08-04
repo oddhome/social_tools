@@ -34,7 +34,7 @@ $config['base_url'] = 'https://www.i-deaplus.net/social_tools/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = '';
+$config['index_page'] = 'index.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -363,7 +363,7 @@ $config['rewrite_short_tags'] = FALSE;
 | Comma-delimited, e.g. '10.0.1.200,10.0.1.201'
 |
 */
-$config['proxy_ips'] = '';
+$config['proxy_ips'] = '103.58.148.164';
 
 
 /* End of file config.php */
