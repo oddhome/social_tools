@@ -7,3 +7,14 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
+application/views/\._left_menu\.php
+
+application/views/\._notif_alarm\.php
+
+application/views/\._notif_inbox\.php
+
+application/views/\._search_box\.php
+
+application/views/\._notif_task\.php
+
+application/views/\._user_menu\.php
