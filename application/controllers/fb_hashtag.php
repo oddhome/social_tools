@@ -17,74 +17,55 @@ class Fb_Hashtag extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
+
+	var $title = "FB #Hashtag";
+	var $upload_dir;
+	public function __construct()
+	{
+		parent::__construct();
+		$this->load->helper('url');
+		$this->load->helper('file');
+		$this->load->helper('form');
+
+		$this->load->model('fb_hashtag_model');
+		$this->upload_dir = $this->fb_hashtag_model->upload_dir;
+	}
+
 	public function index()
 	{
-		error_reporting(0);
-		$hashtag = $this->input->get('hashtag');
-		$cache_file = 'uploads/hashtag.json';
-		$url = 'http://www.facebook-hashtag.com/search/hashtag/' .$hashtag;
 
-		echo '#' .$hashtag. ' Data From : ' .$url;
-		echo '<hr />';
-
-		$json_data = $this->curl_get($url);
-
-		$data = json_encode($json_data,true);
+		$data = array();
+		$data['hashtag_file'] = $this->input->get('hashtag_file');
+		$data['upload_dir'] = $this->upload_dir;
 		
-		if (is_array($data))
-		{
+		#$Data = '';
+		$Data = $this->load->view('fb_hashtag/index',$data,true);
 
-			$fp = fopen ($cache_file,'w');
-			$fwrite($fp,$json_data,strlen($json_data));
-			fclose($fp);
+		$data['title'] = $this->title;
+		$data['content'] = $Data;
+		$this->load->view('master',$data);
+	}
+
+	function do_upload()
+	{
+		$config['upload_path'] = $this->upload_dir;
+		$config['allowed_types'] = '*';
+		$config['max_size']	= '100';
+		$config['file_name'] = date("YmdHis.json");
+
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$error = array('error' => $this->upload->display_errors());
+			print_r($error);
+			//$this->load->view('upload_form', $error);
 		}
 		else
 		{
-			if (file_exists($cache_file))
-			{
-				$fp = fopen ($cache_file, 'rb');
-				$json_data = fread($fp, filesize($cache_file));
-				fclose($fp);
-				#echo $json_data;
-				$data = json_decode($json_data,true);
-				#print_r ($data);
-			}
-			else
-			{
-				echo 'Read Error no cache file';
-			}
-		}
-
-		if (is_array($data))
-		{
-			#print_r ($data);
-			echo '<!-- Latest compiled and minified CSS -->
-		}
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-<!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>';
-			echo '<table class="table table-bordered">';
-			echo '<tr>';
-			echo '<th>Users</th>';
-			echo '<th>Content</th>';
-			echo '<th>Likes</th>';
-			echo '<th>Share</th>';
-			echo '<th>Comment</th>';
-			echo '</tr>';
-			foreach ($data['result'] as $key => $value) {
-				echo '<tr>';
-				echo '<td>' .$value['user']. '</td>';
-				echo '<td>' .$value['content']. '</td>';
-				echo '<td>' .$value['likes']. '</td>';
-				echo '<td>' .$value['shares']. '</td>';
-				echo '<td>' .$value['comments']. '</td>';
-				echo '</tr>';
-			}
-			echo '</table>';
+			$data = $this->upload->data();
+			redirect("fb_hashtag/index?hashtag_file=" .$data['file_name']);
+			//$this->load->view('upload_success', $data);
 		}
 	}
 

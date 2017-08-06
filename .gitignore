@@ -18,3 +18,7 @@ application/views/\._search_box\.php
 application/views/\._notif_task\.php
 
 application/views/\._user_menu\.php
+
+application/views/dashboard/\._index\.php
+
+application/views/fb_hashtag/\._index\.php

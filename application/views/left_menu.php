@@ -3,7 +3,7 @@
 </li> -->
 
 <li>
-    <a href="<?php echo site_url('fb_hashtag/index'); ?>"><i class="fa fa-hashtag"></i> FB Hastag</a>
+    <a href="<?php echo site_url('fb_hashtag/index'); ?>"><i class="fa fa-hashtag fa-fw"></i> FB Hastag</a>
 </li>
 
 <!-- <li>
