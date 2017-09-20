@@ -1,6 +1,14 @@
 <?php
     $asset_url = base_url(). 'assets/startbootstrap-sb-admin-2-gh-pages';
+    if (!isset($options['top_bar']))
+    {
+        $options['top_bar'] = true;
+    }
 
+    if (!isset($options['left_side_bar']))
+    {
+        $options['left_side_bar'] = true;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -50,6 +58,7 @@
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <?php if ($options['left_side_bar']==true) { ?>
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -64,8 +73,9 @@
             <ul class="nav navbar-top-links navbar-right">
                 <!-- Top Menu -->
             </ul>
+            <?php } ?>
             <!-- /.navbar-top-links -->
-
+            <?php if ($options['left_side_bar']==true) { ?>
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
@@ -78,6 +88,7 @@
                 </div>
                 <!-- /.sidebar-collapse -->
             </div>
+            <?php } ?>
             <!-- /.navbar-static-side -->
         </nav>
 
