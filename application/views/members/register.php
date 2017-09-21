@@ -37,7 +37,7 @@
 	}
 </script>
 
-<form name="frm_register" action="" method="post">
+<form name="frm_register" action="<?php echo site_url('members/do_save_register'); ?>" method="post">
 	<input type="hidden" name="line_user_id" value="<?php echo $line_user_id; ?>">
 	<div class="input-group">
   		<span class="input-group-addon" id="basic-addon1">Email*</span>

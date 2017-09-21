@@ -9,6 +9,8 @@ class Bot extends CI_Controller{
         parent::__construct();
 
         $this->load->helper('url');
+        $this->load->database();
+        $this->load->model('members_model');
 
         $bot_name = $this->input->get('bot_name');
         switch ($bot_name)
@@ -20,6 +22,8 @@ class Bot extends CI_Controller{
 
         $this->channel_secret = $this->config->item('line_channel_secret');
         $this->access_token = $this->config->item('line_access_token');
+
+       
     }
 
     function index()
@@ -66,7 +70,16 @@ class Bot extends CI_Controller{
                         switch ($text)
                         {
                             case 'register':
-                                $result = $this->line_reply($replyToken,'ลงทะเบียนกรุณากด :=> ' .site_url('members/register'). '?user_id=' .$user_id);
+                            	$query = $this->members_model->query_line_user($user_id);
+                            	if ($query->num_rows()>0)
+                            	{
+                            		$result = $this->line_reply($replyToken,'Register Successful : คุณลงทะเบียนเรียบร้อยแล้ว');
+                            	}
+                            	else
+                            	{
+                            		$result = $this->line_reply($replyToken,'ลงทะเบียนกรุณากด :=> ' .site_url('members/register'). '?user_id=' .$user_id);
+                            	}
+                                
                             break;
                             default:
                                 $result = $this->line_reply($replyToken,$text);
