@@ -22,3 +22,4 @@ application/views/\._user_menu\.php
 application/views/dashboard/\._index\.php
 
 application/views/fb_hashtag/\._index\.php
+application/config/database.php

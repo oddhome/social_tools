@@ -139,6 +139,45 @@ class Bot extends CI_Controller{
 		$result = $this->curl_post($url,$headers,$post);
 		return $result;
     }
+
+    function send()
+    {
+    	$url = 'https://api.line.me/v2/bot/message/push';
+		$headers = array('Content-Type: application/json', 'Authorization: Bearer ' . $this->access_token);
+
+		$this->db->from('bot_message');
+		$this->db->where('send_status',0);
+		$this->db->where('cron_date < "' .date("Y-m-d H:i:s"). '"');
+		$this->db->order_by('msg_id','asc');
+		$this->db->limit(20);
+		$query = $this->db->get();
+		if ($query->num_rows()>0)
+		{
+			foreach ($query->result() as $rows) {
+				$messages = [
+					'type' => 'text',
+					'text' => $rows->message
+				];
+
+				$data = [
+					'to' => $rows->line_user_id,
+					'messages' => [$messages],
+				];
+
+				print_r ($data);
+				$post = json_encode($data);
+				$result = $this->curl_post($url,$headers,$post);
+
+				if ($result=='{}')
+				{
+					$this->db->where('msg_id',$rows->msg_id);
+					$this->db->update('bot_message',array('send_status'=>1,'send_date'=>date("Y-m-d H:i:s")));
+				}
+
+				echo $result . "\r\n";
+			}
+		}
+    }
     
     function verify()
 	{

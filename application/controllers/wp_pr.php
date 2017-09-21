@@ -2,6 +2,7 @@
 class Wp_Pr extends CI_Controller{
 	var $title = "Wordpress Line PR";
 	var $wp_json_posts = 'http://www.iamcar.net/wp-json/wp/v2/posts';
+
 	function __construct()
 	{
 		parent::__construct();
@@ -33,6 +34,9 @@ class Wp_Pr extends CI_Controller{
 	{
 		$data = $this->input->post();
 		print_r ($data);
+
+		$this->db->insert('bot_pr',$data);
+		redirect('wp_pr/list_contents');
 	}
 
 	function curl_post($url,$headers='',$post='')

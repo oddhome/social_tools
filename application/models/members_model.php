@@ -6,6 +6,13 @@ class Members_Model extends CI_Model{
 		parent::__construct();
 	}
 
+	function query_all_active_users()
+	{
+		$this->db->from($this->table_name);
+		$query = $this->db->get();
+		return $query;
+	}
+
 	function query_line_user($line_user_id)
 	{
 		$this->db->from($this->table_name);
