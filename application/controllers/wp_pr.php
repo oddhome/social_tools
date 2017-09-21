@@ -2,6 +2,7 @@
 class Wp_Pr extends CI_Controller{
 	var $title = "Wordpress Line PR";
 	var $wp_json_posts = 'http://www.iamcar.net/wp-json/wp/v2/posts';
+	//var $wp_json_posts = 'http://www.iamcar.net/wp-json/wp/v2/posts?per_page=20&after=' .date("Y-m"). '-01T00:00:00';
 
 	function __construct()
 	{
@@ -11,6 +12,11 @@ class Wp_Pr extends CI_Controller{
 		$this->load->helper('url');
 
 		$this->load->database();
+
+		$last_month = new DateTime();
+		$last_month->modify("-1 Month");
+
+		$this->wp_json_posts = 'http://www.iamcar.net/wp-json/wp/v2/posts?per_page=100&after=' .$last_month->format("Y-m"). '-01T00:00:00';
 	}
 
 	function index()
