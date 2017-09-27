@@ -85,8 +85,12 @@ class Members extends CI_Controller{
 						$query_check = $this->db->get();
 						if ($query_check->num_rows()==0)
 						{
+							$picture_url = base_url(). 'uploads/wp_pr/' .$rows_pr->id. '.jpg';
+							$baseurl = site_url('wp_pr/picture/' .$rows_pr->id);
 							//Send Line Bot
-							$this->bot_model->send_message($rows->line_user_id,$rows_pr->title. ' รายละเอียด => ' .$rows_pr->link);
+							#$this->bot_model->send_message($rows->line_user_id,$rows_pr->title. ' รายละเอียด => ' .$rows_pr->link);
+							$this->bot_model->send_message_imagemap($rows->line_user_id,$rows_pr->title,$baseurl,$rows_pr->link,$picture_url);
+
 
 							//Save History
 							$data = array(

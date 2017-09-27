@@ -154,15 +154,106 @@ class Bot extends CI_Controller{
 		if ($query->num_rows()>0)
 		{
 			foreach ($query->result() as $rows) {
-				$messages = [
-					'type' => 'text',
-					'text' => $rows->message
-				];
 
-				$data = [
-					'to' => $rows->line_user_id,
-					'messages' => [$messages],
-				];
+				switch ($rows->type) {
+					case 'imagemap':
+						//Get Image Width , Height
+						$size = getimagesize($rows->picture_url);
+						#print_r ($size);
+						$width = $size[0];
+						$height = $size[1];
+
+						if (($width>1040)||($height>1040))
+						{
+							if ($width > $height)
+							{
+								$scale = 1040/$width;
+							}
+
+							if ($height > $width)
+							{
+								$scale = 1040/$height;
+							}
+
+							$width = $width * $scale;
+							$height = $height * $scale;
+						}
+
+						
+						$actions = [
+							[
+								'type' => 'uri',
+								'linkUri' => $rows->url,
+								'area' => [
+									'x' => 0,
+									'y' => 0,
+									'width' => $width,
+									'height' => $height,
+								],
+							],
+						];
+
+						$messages = [
+							'type' => 'imagemap',
+							'baseUrl' => $rows->baseurl,
+							'altText' => $rows->message,
+							'baseSize' => [
+								'height' => $width,
+								'width' => $height,
+							],
+							'actions' => $actions,
+						];
+
+
+						$data = [
+							'to' => $rows->line_user_id,
+							'messages' => [$messages],
+						];
+						#print_r ($data);
+						#exit();
+					break;
+					case 'template':
+						$actions = [
+							[
+								'type' => 'uri',
+								'label' => 'View detail',
+								'uri' => $rows->url
+							],
+						];
+
+						$template = [
+							'type' => 'buttons',
+							'thumbnailImageUrl' => $rows->picture_url,
+							'title' => 'menu',
+							'text' => 'Please select',
+							'actions' => $actions
+						];
+
+						$messages = [
+							'type' => 'template',
+							'altText' => "this is a buttons template",
+							'template' => $template,
+						];
+
+						$data = [
+							'to' => $rows->line_user_id,
+							'messages' => [$messages],
+						];
+					break;
+					
+					default:
+						$messages = [
+							'type' => 'text',
+							'text' => $rows->message
+						];
+
+						$data = [
+							'to' => $rows->line_user_id,
+							'messages' => [$messages],
+						];
+					break;
+				}
+				
 
 				print_r ($data);
 				$post = json_encode($data);
