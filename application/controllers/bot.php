@@ -163,21 +163,21 @@ class Bot extends CI_Controller{
 						$width = $size[0];
 						$height = $size[1];
 
-						if (($width>1040)||($height>1040))
-						{
-							if ($width > $height)
-							{
-								$scale = 1040/$width;
-							}
+						// if (($width>1040)||($height>1040))
+						// {
+						// 	if ($width > $height)
+						// 	{
+						// 		$scale = 1040/$width;
+						// 	}
 
-							if ($height > $width)
-							{
-								$scale = 1040/$height;
-							}
+						// 	if ($height > $width)
+						// 	{
+						// 		$scale = 1040/$height;
+						// 	}
 
-							$width = $width * $scale;
-							$height = $height * $scale;
-						}
+						// 	$width = $width * $scale;
+						// 	$height = $height * $scale;
+						// }
 
 						
 						$actions = [
@@ -198,8 +198,8 @@ class Bot extends CI_Controller{
 							'baseUrl' => $rows->baseurl,
 							'altText' => $rows->message,
 							'baseSize' => [
-								'height' => $width,
-								'width' => $height,
+								'height' => $height,
+								'width' => $width,
 							],
 							'actions' => $actions,
 						];
