@@ -19,6 +19,30 @@ class Members extends CI_Controller{
 
 	}
 
+	function test_member()
+	{
+		$this->load->library('table');
+		$data = array();
+		$Data = $this->load->view('members/test_member',$data,true);
+		$data['title'] = 'Test Members';
+		$data['content'] = $Data;
+		$this->load->view('master',$data);
+	}
+
+	function remove_test_member($members_id)
+	{
+		$this->db->where('members_id',$members_id);
+		$this->db->update('members',array('test_group'=>0));
+		redirect ('members/test_member');
+	}
+
+	function add_test_member($members_id)
+	{
+		$this->db->where('members_id',$members_id);
+		$this->db->update('members',array('test_group'=>1));
+		redirect ('members/test_member');
+	}
+
 	function register()
 	{
 		$line_user_id = $this->input->get('user_id');

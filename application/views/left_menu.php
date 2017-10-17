@@ -8,6 +8,10 @@
 <li>
     <a href="<?php echo site_url('wp_pr/index'); ?>"><i class="fa fa-hashtag fa-fw"></i> WP Line PR</a>
 </li>
+<li>
+    <a href="<?php echo site_url('members/test_member'); ?>"><i class="fa fa-group fa-fw"></i> Test Members</a>
+</li>
+
 
 <!-- <li>
     <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>

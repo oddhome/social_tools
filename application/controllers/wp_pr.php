@@ -88,9 +88,18 @@ class Wp_Pr extends CI_Controller{
 		$picture_url = base_url(). 'uploads/wp_pr/' .$data['id']. '.jpg';
 		$baseurl = site_url('wp_pr/picture/' .$data['id']);
 
+		$this->db->from('members');
+		$this->db->where('test_group',1);
+		$query = $this->db->get();
 
-		#$this->bot_model->send_message($line_user_id,$data['title']. ' รายละเอียด => ' .$data['link']);
-		$this->bot_model->send_message_imagemap($line_user_id,$data['title'],$baseurl,$data['link'],$picture_url);
+		if ($query->num_rows()>0)
+		{
+			foreach ($query->result() as $rows) {
+				#$this->bot_model->send_message($line_user_id,$data['title']. ' รายละเอียด => ' .$data['link']);
+				$this->bot_model->send_message_imagemap($rows->line_user_id,$data['title'],$baseurl,$data['link'],$picture_url);
+			}
+		}
+		
 		redirect('wp_pr/list_contents');
 
 	}
